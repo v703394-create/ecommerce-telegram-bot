@@ -22,19 +22,29 @@ Copy the repository: `git clone https://github.com/ddosmukhambetov/ecommerce-tel
 Rename the file: `.env.example` to `.env`
 Modify the variables in the `.env` file
 
+If you want a domain with HTTPS for the admin panel, also set:
+
+- `CADDY_DOMAIN` (e.g. `krakenadmin.duckdns.org`)
+- `CADDY_EMAIL` (email for Let's Encrypt)
+
 ### 3. Run the project
 
 To start the project, you can use the following commands from the Makefile:
 
-- `make all` - Starts both the database and the application containers. It builds and runs them in detached mode (-d).
+- `make all` - Starts the database, application, and Caddy containers.
 - `make create-superuser` - Creates a superuser for the Django admin panel by running python manage.py createsuperuser
 - `make bot-logs` - Shows the logs for the application container (bot) in real-time.
+
+If you only want to run Caddy separately (for HTTPS + domain proxy):
+
+- `make caddy` - Starts the Caddy container.
+- `make caddy-logs` - Shows Caddy logs.
 
 ### 4. Available commands
 
 Here is a list of the available commands from the Makefile. Each command can be run manually or through make:
 
-- `make all` - Starts both the database and the application containers. It builds and runs them in detached mode (-d).
+- `make all` - Starts the database, application, and Caddy containers. It builds and runs them in detached mode (-d).
 - `make all-down` - Stops and removes both the database and the application containers.
 - `make bot` - Builds and starts the application container (bot) with Docker Compose.
 - `make bot-down` - Stops and removes the application container (bot), including orphaned containers.
@@ -52,6 +62,9 @@ Here is a list of the available commands from the Makefile. Each command can be 
 - `make db-down` - Stops and removes the database container (postgres), including orphaned containers.
 - `make db-exec` - Accesses the database container and opens a bash shell inside it.
 - `make db-logs` - Shows the logs for the database container (postgres) in real-time.
+- `make caddy` - Starts the Caddy container (HTTPS reverse proxy for your domain).
+- `make caddy-down` - Stops and removes the Caddy container.
+- `make caddy-logs` - Shows the logs for the Caddy container in real-time.
 
 ## Telegram Bot Functionality
 

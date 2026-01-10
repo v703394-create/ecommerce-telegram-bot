@@ -1,0 +1,8 @@
+{
+    email {$CADDY_EMAIL}
+}
+
+{$CADDY_DOMAIN} {
+    reverse_proxy host.docker.internal:{$BOT_PORT}
+    encode zstd gzip
+}
