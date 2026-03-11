@@ -5,9 +5,11 @@ ENV = --env-file .env
 
 BOT_FILE = dc/bot.yaml
 DB_FILE = dc/db.yaml
+CADDY_FILE = dc/caddy.yaml
 
 BOT_CONTAINER = bot
 DB_CONTAINER = postgres
+CADDY_CONTAINER = caddy
 
 # Replace with your own values
 POSTGRES_USER = POSTGRES_USER
@@ -65,8 +67,22 @@ db-logs:
 all:
 	$(DC) -f $(DB_FILE) $(ENV) up --build -d
 	$(DC) -f $(BOT_FILE) $(ENV) up --build -d
+	$(DC) -f $(CADDY_FILE) $(ENV) up -d
 
 .PHONY: all-down
 all-down:
 	$(DC) -f $(DB_FILE) $(ENV) down --remove-orphans
 	$(DC) -f $(BOT_FILE) $(ENV) down --remove-orphans
+	$(DC) -f $(CADDY_FILE) $(ENV) down --remove-orphans
+
+.PHONY: caddy
+caddy:
+	$(DC) -f $(CADDY_FILE) $(ENV) up -d
+
+.PHONY: caddy-down
+caddy-down:
+	$(DC) -f $(CADDY_FILE) $(ENV) down --remove-orphans
+
+.PHONY: caddy-logs
+caddy-logs:
+	$(DC) -f $(CADDY_FILE) $(ENV) logs -f
